@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import AxiosInstance from '@/plugins/axios';
 export default {
   data() {
     return {
@@ -50,8 +51,14 @@ export default {
 
   methods: {
     login() {
-      sessionStorage.setItem('user', this.user);
-      this.$router.push('/');
+      AxiosInstance({
+        url: '/hello',
+        method: 'get',
+      }).then(res => {
+        console.log(res);
+        sessionStorage.setItem('user', this.user);
+        this.$router.push('/');
+      })
     },
     logout() {
       sessionStorage.setItem('user', '');
