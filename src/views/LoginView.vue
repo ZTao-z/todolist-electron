@@ -49,7 +49,7 @@ export default {
         const UserInfoResponse = root.lookupType('user.UserInfoResponse');
 
         const payload = {
-          userId: 1
+          userId: +this.user
         }
 
         const errMsg = UserInfoRequest.verify(payload);
