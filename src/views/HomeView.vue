@@ -1,84 +1,35 @@
 <template>
   <v-container>
-    <v-list subheader two-line>
-      <v-subheader inset>Folders</v-subheader>
-
-      <v-list-item v-for="folder in folders" :key="folder.title">
-        <v-list-item-avatar>
-          <v-icon class="grey lighten-1" dark> mdi-folder </v-icon>
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title v-text="folder.title"></v-list-item-title>
-
-          <v-list-item-subtitle v-text="folder.subtitle"></v-list-item-subtitle>
-        </v-list-item-content>
-
-        <v-list-item-action>
-          <v-btn icon>
-            <v-icon color="grey lighten-1">mdi-information</v-icon>
-          </v-btn>
-        </v-list-item-action>
-      </v-list-item>
-
-      <v-divider inset></v-divider>
-
-      <v-subheader inset>Files</v-subheader>
-
-      <v-list-item v-for="file in files" :key="file.title">
-        <v-list-item-avatar>
-          <v-icon :class="file.color" dark v-text="file.icon"></v-icon>
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title v-text="file.title"></v-list-item-title>
-
-          <v-list-item-subtitle v-text="file.subtitle"></v-list-item-subtitle>
-        </v-list-item-content>
-
-        <v-list-item-action>
-          <v-btn icon>
-            <v-icon color="grey lighten-1">mdi-information</v-icon>
-          </v-btn>
-        </v-list-item-action>
-      </v-list-item>
-    </v-list>
+    <v-row>
+      <v-col cols="4" style="width: 290px;">
+        <v-row>
+          <v-date-picker v-model="picker" no-title></v-date-picker>
+        </v-row>
+        <v-row>
+          <v-list>
+            <v-list-item>test1 剩余 2 天</v-list-item>
+            <v-list-item>test2 剩余 19 天</v-list-item>
+          </v-list>
+        </v-row>
+      </v-col>
+      <v-col>
+        <CanlendarComponent />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
+import CanlendarComponent from '@/components/Canlendar.vue';
+import dayjs from 'dayjs';
 export default {
   name: "HomeView",
+  components: {
+    CanlendarComponent
+  },
   data() {
     return {
-      files: [
-        {
-          color: "blue",
-          icon: "mdi-clipboard-text",
-          subtitle: "Jan 20, 2014",
-          title: "Vacation itinerary",
-        },
-        {
-          color: "amber",
-          icon: "mdi-gesture-tap-button",
-          subtitle: "Jan 10, 2014",
-          title: "Kitchen remodel",
-        },
-      ],
-      folders: [
-        {
-          subtitle: "Jan 9, 2014",
-          title: "Photos",
-        },
-        {
-          subtitle: "Jan 17, 2014",
-          title: "Recipes",
-        },
-        {
-          subtitle: "Jan 28, 2014",
-          title: "Work",
-        },
-      ],
+      picker: dayjs().format('YYYY-MM-DD')
     };
   },
 };

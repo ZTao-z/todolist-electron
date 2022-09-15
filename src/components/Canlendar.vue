@@ -1,0 +1,82 @@
+<template>
+  <v-container>
+    <v-calendar
+      ref="calendar"
+      v-model="date"
+      :weekdays="weekdays"
+      :type="type"
+      :events="events"
+      :event-overlap-mode="mode"
+      :event-overlap-threshold="30"
+      :event-color="getEventColor"
+      @change="getEvents"
+      @click:date="viewDay"
+    ></v-calendar>
+  </v-container>
+</template>
+
+<style scoped>
+
+</style>
+
+<script>
+import dayjs from 'dayjs';
+import { getAssignment } from '@/api/assignment';
+
+export default {
+  name: 'CanlendarComponent',
+  data() {
+    return {
+      type: 'month',
+      weekdays: [0, 1, 2, 3, 4, 5, 6],
+      date: '',
+      events: [],
+      mode: 'stack'
+    }
+  },
+
+  created() {
+    this.generateCanlendar()
+  },
+
+  mounted() {
+    this.getEvents();
+  },
+
+  methods: {
+    generateCanlendar() {
+      this.date = dayjs().format('YYYY-MM-DD');
+    },
+
+    getEventColor (event) {
+      return event.color
+    },
+
+    getEvents() {
+      const day = dayjs(this.date);
+      let startDay = null;
+      let endDay = null
+      if (this.type === 'day') {
+        startDay = day.startOf('day');
+        endDay = day.endOf('day');
+      } else if (this.type === 'week') {
+        startDay = day.startOf('week');
+        endDay = day.endOf('week');
+      } else if (this.type === 'month') {
+        startDay = day.startOf('month');
+        endDay = day.endOf('month');
+      } 
+      getAssignment(startDay.valueOf(), endDay.valueOf()).then(data => {
+        this.events = data;
+      })
+    },
+
+    viewDay({ date }) {
+      this.date = date;
+      this.type = 'day';
+      this.mode = 'column';
+    },
+
+  }
+}
+</script>

@@ -27,7 +27,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const user = sessionStorage.getItem('user');
+  const user = sessionStorage.getItem('userId');
   if (to.path === '/login') {
     next();
   } else {

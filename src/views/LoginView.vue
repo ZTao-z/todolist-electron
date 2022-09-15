@@ -40,16 +40,18 @@ export default {
 
   methods: {
     login() {
-      load('user_login.proto', (err, root) => {
+      load('userProto.proto', (err, root) => {
         if(err) {
           console.error(err);
           return;
         }
-        const UserInfoRequest = root.lookupType('user.UserInfoRequest');
-        const UserInfoResponse = root.lookupType('user.UserInfoResponse');
+        const UserInfoRequest = root.lookupType('user.LoginRequest');
+        const UserInfoResponse = root.lookupType('user.LoginResponse');
 
         const payload = {
-          userId: +this.user
+          info: this.user,
+          password: this.password,
+          type: 1,
         }
 
         const errMsg = UserInfoRequest.verify(payload);
@@ -74,7 +76,7 @@ export default {
         console.log(object)
 
         AxiosInstance({
-          url: '/hello',
+          url: '/login',
           method: 'post',
           responseType: 'arraybuffer',
           headers: {
@@ -82,22 +84,24 @@ export default {
           },
           data: buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength)
         }).then(res => {
-          console.log(res);
-          var message = UserInfoResponse.decode(new Uint8Array(res));
-          var object = UserInfoResponse.toObject(message, {
+          const message = UserInfoResponse.decode(new Uint8Array(res));
+          const response = UserInfoResponse.toObject(message, {
               longs: String,
               enums: String,
               bytes: String,
               // see ConversionOptions
           });
-          console.log(object)
-          sessionStorage.setItem('user', this.user);
-          this.$router.push('/');
+          if (!response.code) {
+            sessionStorage.setItem('userId', object.id);
+            this.$router.push('/');
+          } else {
+            console.error(response.code);
+          }
         })
       })
     },
     logout() {
-      sessionStorage.setItem('user', '');
+      sessionStorage.setItem('userId', '');
       this.$router.push('/login');
     }
   }
