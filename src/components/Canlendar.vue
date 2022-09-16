@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-sheet height="100%" width="100%">
     <v-calendar
       ref="calendar"
       v-model="date"
@@ -12,7 +12,7 @@
       @change="getEvents"
       @click:date="viewDay"
     ></v-calendar>
-  </v-container>
+  </v-sheet>
 </template>
 
 <style scoped>

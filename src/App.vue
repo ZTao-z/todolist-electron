@@ -1,9 +1,5 @@
 <template>
   <v-app id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/login">About</router-link>
-    </nav>
     <router-view/>
   </v-app>
 </template>
@@ -21,5 +17,9 @@ nav {
       color: #42b983;
     }
   }
+}
+
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
 }
 </style>

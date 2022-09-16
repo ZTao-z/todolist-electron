@@ -1,36 +1,28 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="4" style="width: 290px;">
-        <v-row>
-          <v-date-picker v-model="picker" no-title></v-date-picker>
-        </v-row>
-        <v-row>
-          <v-list>
-            <v-list-item>test1 剩余 2 天</v-list-item>
-            <v-list-item>test2 剩余 19 天</v-list-item>
-          </v-list>
-        </v-row>
-      </v-col>
-      <v-col>
-        <CanlendarComponent />
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-sheet width="100%" height="100%" class="d-flex justify-start align-stretch">
+    <v-sheet width="290" height="100%" class="d-flex justify-start flex-column">
+      <DatePickerComponent />
+      <TaskListComponent />
+    </v-sheet>
+    <v-sheet height="100%" style="flex:1">
+      <CanlendarComponent />
+    </v-sheet>
+  </v-sheet>
 </template>
 
 <script>
 import CanlendarComponent from '@/components/Canlendar.vue';
-import dayjs from 'dayjs';
+import DatePickerComponent from '@/components/DatePicker.vue';
+import TaskListComponent from '@/components/TaskList.vue';
 export default {
   name: "HomeView",
   components: {
-    CanlendarComponent
+    CanlendarComponent,
+    DatePickerComponent,
+    TaskListComponent,
   },
   data() {
-    return {
-      picker: dayjs().format('YYYY-MM-DD')
-    };
+    return {}
   },
 };
 </script>
