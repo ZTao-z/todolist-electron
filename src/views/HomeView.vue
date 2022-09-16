@@ -4,7 +4,11 @@
       <DatePickerComponent />
       <TaskListComponent />
     </v-sheet>
-    <v-sheet height="100%" style="flex:1">
+    <v-sheet height="100%" style="flex: 1; height: 100vh" class="d-flex flex-column">
+      <v-sheet height="44px" class="d-flex justify-start">
+        <CanlendarSelectorComponent />
+        <UserAvatarComponent />
+      </v-sheet>
       <CanlendarComponent />
     </v-sheet>
   </v-sheet>
@@ -14,12 +18,16 @@
 import CanlendarComponent from '@/components/Canlendar.vue';
 import DatePickerComponent from '@/components/DatePicker.vue';
 import TaskListComponent from '@/components/TaskList.vue';
+import CanlendarSelectorComponent from '@/components/CanlendarSelector.vue';
+import UserAvatarComponent from '@/components/UserAvatar.vue';
 export default {
   name: "HomeView",
   components: {
     CanlendarComponent,
     DatePickerComponent,
     TaskListComponent,
+    CanlendarSelectorComponent,
+    UserAvatarComponent,
   },
   data() {
     return {}
