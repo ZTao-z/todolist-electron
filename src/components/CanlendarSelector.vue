@@ -30,5 +30,9 @@ export default {
       type: 0,
     };
   },
+  methods: {
+    prev() {},
+    next() {}
+  }
 };
 </script>

@@ -1,5 +1,6 @@
 syntax = "proto3";
-package task;
+import "Common.proto";
+package Task;
 
 message Task {
     int32 id = 1;
@@ -15,16 +16,6 @@ message Task {
     int32 remindMethod = 11;
     int64 remindTime = 12;
     string address = 13;
-}
-
-enum ResponseCode {
-    Success = 0;
-    Error = 2001;
-}
-
-message Response {
-    ResponseCode code = 1;
-    string message = 2;
 }
 
 message AddTaskRequest {
@@ -51,14 +42,15 @@ message UpdateTaskResponse {
     Response response = 1;
 }
 
-message GetTaskRequest {
-    int64 startTime = 1;
-    int64 endTime = 2;
-    string category = 7;
-    int32 state = 9;
+message GetTasksRequest {
+    int32 userId = 1;
+    int64 startTime = 2;
+    int64 endTime = 3;
+    string category = 4;
+    int32 state = 5;
 }
 
-message GetTaskResponse {
+message GetTasksResponse {
     Response response = 1;
     repeated Task tasks = 2;
 }

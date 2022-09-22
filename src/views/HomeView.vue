@@ -1,7 +1,7 @@
 <template>
   <v-sheet width="100%" height="100%" class="d-flex justify-start align-stretch">
     <v-sheet width="290" height="100%" class="d-flex justify-start flex-column">
-      <DatePickerComponent />
+      <DatePickerComponent v-model="currentDate" />
       <TaskListComponent />
     </v-sheet>
     <v-sheet height="100%" style="flex: 1; height: 100vh" class="d-flex flex-column">
@@ -9,7 +9,7 @@
         <CanlendarSelectorComponent />
         <UserAvatarComponent />
       </v-sheet>
-      <CanlendarComponent />
+      <CanlendarComponent v-model="currentDate" />
     </v-sheet>
   </v-sheet>
 </template>
@@ -20,6 +20,7 @@ import DatePickerComponent from '@/components/DatePicker.vue';
 import TaskListComponent from '@/components/TaskList.vue';
 import CanlendarSelectorComponent from '@/components/CanlendarSelector.vue';
 import UserAvatarComponent from '@/components/UserAvatar.vue';
+import dayjs from 'dayjs';
 export default {
   name: "HomeView",
   components: {
@@ -30,7 +31,9 @@ export default {
     UserAvatarComponent,
   },
   data() {
-    return {}
+    return {
+      currentDate: dayjs().format('YYYY-MM-DD')
+    }
   },
 };
 </script>

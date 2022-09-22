@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import AxiosInstance from '@/plugins/axios';
-import { load } from 'protobufjs';
+import pbRequest from '@/plugins/request';
+
 export default {
   data() {
     return {
@@ -40,66 +40,22 @@ export default {
 
   methods: {
     login() {
-      load('userProto.proto', (err, root) => {
-        if(err) {
-          console.error(err);
-          return;
-        }
-        const UserInfoRequest = root.lookupType('user.LoginRequest');
-        const UserInfoResponse = root.lookupType('user.LoginResponse');
-
-        const payload = {
-          info: this.user,
-          password: this.password,
-          type: 1,
-        }
-
-        const errMsg = UserInfoRequest.verify(payload);
-        if (errMsg) {
-          console.error(errMsg);
-          return;
-        }
-
-        // Create a new message
-        var message = UserInfoRequest.create(payload); // or use .fromObject if conversion is necessary
-
-        // Encode a message to an Uint8Array (browser) or Buffer (node)
-        var buffer = UserInfoRequest.encode(message).finish();
-
-        var message1 = UserInfoRequest.decode(buffer);
-        var object = UserInfoRequest.toObject(message1, {
-            longs: String,
-            enums: String,
-            bytes: String,
-            // see ConversionOptions
-        });
-        console.log(object)
-
-        AxiosInstance({
-          url: '/login',
-          method: 'post',
-          responseType: 'arraybuffer',
-          headers: {
-            'Content-Type': "application/x-protobuf"
-          },
-          data: buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength)
-        }).then(res => {
-          const message = UserInfoResponse.decode(new Uint8Array(res));
-          const response = UserInfoResponse.toObject(message, {
-              longs: String,
-              enums: String,
-              bytes: String,
-              // see ConversionOptions
-          });
-          if (!response.code) {
-            sessionStorage.setItem('userId', object.id);
-            this.$router.push('/');
-          } else {
-            console.error(response.code);
-          }
-        })
+      pbRequest('/login', 'User', 'UserLogin', { 
+        user: {
+          name: '',
+          pwd: this.password,
+          email: this.user
+        },
+        type: 1
+      }).then(res => {
+        const { user } = res;
+        sessionStorage.setItem('userId', user.id);
+        this.$router.push('/');
+      }).catch(err => {
+        console.error(err);
       })
     },
+
     logout() {
       sessionStorage.setItem('userId', '');
       this.$router.push('/login');

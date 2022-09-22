@@ -21,7 +21,7 @@
 
 <script>
 import dayjs from 'dayjs';
-import { getAssignment } from '@/api/assignment';
+import pbRequest from '@/plugins/request';
 
 export default {
   name: 'CanlendarComponent',
@@ -29,31 +29,33 @@ export default {
     return {
       type: 'month',
       weekdays: [0, 1, 2, 3, 4, 5, 6],
-      date: '',
+      date: this.current,
       events: [],
       mode: 'stack'
     }
-  },
-
-  created() {
-    this.generateCanlendar()
   },
 
   mounted() {
     this.getEvents();
   },
 
-  methods: {
-    generateCanlendar() {
-      this.date = dayjs().format('YYYY-MM-DD');
-    },
+  props: {
+    current: String
+  },
 
+  model: {
+    props: 'current',
+    event: 'current'
+  },
+
+  methods: {
     getEventColor (event) {
       return event.color
     },
 
     getEvents() {
       const day = dayjs(this.date);
+      const userId = +sessionStorage.getItem('userId');
       let startDay = null;
       let endDay = null
       if (this.type === 'day') {
@@ -65,10 +67,20 @@ export default {
       } else if (this.type === 'month') {
         startDay = day.startOf('month');
         endDay = day.endOf('month');
-      } 
-      getAssignment(startDay.valueOf(), endDay.valueOf()).then(data => {
-        this.events = data;
+      }
+
+      pbRequest('/getTask', 'Task', 'GetTasks', {
+        userId,
+        startTime: startDay.unix(),
+        endTime: endDay.unix()
+      }).then(res => {
+        console.log(res);
+        this.events = res.tasks || []
+      }).catch(err => {
+        console.error(err);
       })
+
+      this.$emit('current', this.date)
     },
 
     viewDay({ date }) {
