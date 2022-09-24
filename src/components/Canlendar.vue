@@ -27,7 +27,7 @@ export default {
   name: 'CanlendarComponent',
   data() {
     return {
-      type: 'month',
+      type: this.canlendarType,
       weekdays: [0, 1, 2, 3, 4, 5, 6],
       date: this.current,
       events: [],
@@ -40,12 +40,8 @@ export default {
   },
 
   props: {
-    current: String
-  },
-
-  model: {
-    props: 'current',
-    event: 'current'
+    current: String,
+    canlendarType: String
   },
 
   methods: {
@@ -76,21 +72,32 @@ export default {
         category: 'default',
         state: 0
       }).then(res => {
-        console.log(res);
-        this.events = res.tasks || []
+        this.events = (res.tasks || []).map(el => ({ start: new Date(el.startTime), end: new Date(el.endTime), name: el.title, timed: false, color: el.color }))
       }).catch(err => {
         console.error(err);
       })
 
-      this.$emit('current', this.date)
+      this.$emit("dateChange", {
+        date: this.date,
+        from: 'canlendar'
+      });
     },
 
     viewDay({ date }) {
       this.date = date;
       this.type = 'day';
       this.mode = 'column';
+      this.$emit('canlendarTypeChange', this.type);
     },
+  },
 
+  watch: {
+    current(val) {
+      this.date = val;
+    },
+    canlendarType(val) {
+      this.type = val;
+    }
   }
 }
 </script>

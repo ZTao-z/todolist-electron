@@ -67,7 +67,7 @@ export default {
       title: '',
       startTime: '',
       endTime: '',
-      color: '',
+      color: '#ff0000',
       category: 'default',
       content: '',
       state: 0,
@@ -97,13 +97,13 @@ export default {
           address: this.address,
         }
       }).then(() => {
-        this.$emit('add-task-succ');
+        this.$emit('success');
       }).catch((err) => {
-        this.$emit('add-tast-fail', err);
+        this.$emit('error', err);
       })
     },
     cancel() {
-      this.$emit('add-tast-cancel');
+      this.$emit('cancel');
     }
   }
 }

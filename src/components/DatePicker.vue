@@ -9,13 +9,9 @@ import pbRequest from '@/plugins/request';
 import dayjs from 'dayjs';
 export default {
   name: 'DatePickerComponent',
+
   props: {
     current: String
-  },
-
-  model: {
-    props: 'current',
-    event: 'current'
   },
 
   data() {
@@ -32,8 +28,10 @@ export default {
   methods: {
     onChange(data) {
       this.picker = data;
-      this.getEvents(data);
-      this.$emit('current', data)
+      this.$emit("dateChange", {
+        date: this.picker,
+        from: 'picker'
+      });
     },
 
     getEvents(date) {
@@ -48,12 +46,20 @@ export default {
         category: 'default',
         state: 0
       }).then(res => {
-        console.log(res);
-        this.events = res.tasks || []
+        this.events = (res.tasks || []).map(el => dayjs(el.startTime).format('YYYY-MM-DD'))
       }).catch(err => {
         console.error(err);
       })
     }
   },
+
+  watch: {
+    current(val) {
+      this.picker = val;
+    },
+    picker(val) {
+      this.getEvents(val);
+    }
+  }
 }
 </script>
