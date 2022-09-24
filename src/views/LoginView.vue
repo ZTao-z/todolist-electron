@@ -19,7 +19,7 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-btn depressed tile outlined block @click="logout"> 退出 </v-btn>
+          <v-btn depressed tile outlined block @click="regist"> 注册 </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -56,9 +56,9 @@ export default {
       })
     },
 
-    logout() {
+    regist() {
       sessionStorage.setItem('userId', '');
-      this.$router.push('/login');
+      this.$router.push('/regist');
     }
   }
 };
