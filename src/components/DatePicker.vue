@@ -41,11 +41,12 @@ export default {
       const startDay = day.startOf('month');
       const endDay = day.endOf('month');
       const userId = +sessionStorage.getItem('userId');
-
       pbRequest('/getTask', 'Task', 'GetTasks', {
         userId,
-        startTime: startDay.unix(),
-        endTime: endDay.unix()
+        startTime: startDay.valueOf(),
+        endTime: endDay.valueOf(),
+        category: 'default',
+        state: 0
       }).then(res => {
         console.log(res);
         this.events = res.tasks || []
