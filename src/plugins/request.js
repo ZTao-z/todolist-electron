@@ -33,7 +33,7 @@ export default function pbRequest (url, module, apiName, payload) {
 
       const token = sessionStorage.getItem('token') || '';
       if (token) {
-        headers['Authorization'] = token;
+        headers['Authorization'] = 'Bearer ' + token;
       }
 
       AxiosInstance({
