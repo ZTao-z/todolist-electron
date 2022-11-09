@@ -48,8 +48,9 @@ export default {
         },
         type: 1
       }).then(res => {
-        const { user } = res;
+        const { user, token } = res;
         sessionStorage.setItem('userId', user.id);
+        sessionStorage.setItem('token', token);
         this.$router.push('/');
       }).catch(err => {
         console.error(err);
